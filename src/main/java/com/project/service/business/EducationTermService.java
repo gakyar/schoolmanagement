@@ -114,7 +114,13 @@ public class EducationTermService {
     }
 
     public ResponseMessage<EducationTermResponse> deleteById(Long educationTermId) {
-        return SuccessMessages.EDUCATION_TERM_DELETE;
+
+        educationTermRepository.deleteById(educationTermId);
+
+        return ResponseMessage.builder()
+                .message(SuccessMessages.EDUCATION_TERM_DELETE)
+                .httpStatus(HttpStatus.OK)
+                .build();
 
 
 
