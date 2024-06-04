@@ -1,9 +1,7 @@
 package com.project.service.business;
 
 import com.project.entity.concretes.business.EducationTerm;
-import com.project.entity.concretes.business.Lesson;
 import com.project.exception.BadRequestException;
-import com.project.exception.ConflictException;
 import com.project.exception.ResourceNotFoundException;
 import com.project.payload.mappers.EducationTermMapper;
 import com.project.payload.messages.ErrorMessages;
@@ -12,7 +10,6 @@ import com.project.payload.request.business.EducationTermRequest;
 import com.project.payload.response.business.EducationTermResponse;
 import com.project.payload.response.business.ResponseMessage;
 import com.project.repository.business.EducationTermRepository;
-import com.project.service.helper.MethodHelper;
 import com.project.service.helper.PageableHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -30,7 +27,6 @@ public class EducationTermService {
     private final EducationTermRepository educationTermRepository;
     private final EducationTermMapper educationTermMapper;
     private final PageableHelper pageableHelper;
-    private final MethodHelper methodHelper;
 
 
     // Not: save() *******************************************************************************
@@ -49,6 +45,7 @@ public class EducationTermService {
     private void validateEducationTermDatesForRequest(EducationTermRequest educationTermRequest) {
         // !!! bu metodda amacimiz requestten gelen registrationDate,StartDate ve endDate arasindaki
         // tarih sirasina gore dogru mu setlenmis onu kontrol etmek
+
         // registration > start
         if (educationTermRequest.getLastRegistrationDate().isAfter(educationTermRequest.getStartDate())) {
             throw new ResourceNotFoundException(
@@ -64,7 +61,6 @@ public class EducationTermService {
     // !!! yrd Metod - 2 ********************************************************************
     private void validateEducationTermDates(EducationTermRequest educationTermRequest) {
 
-        validateEducationTermDatesForRequest(educationTermRequest); // Yrd Method - 2
         validateEducationTermDatesForRequest(educationTermRequest); // Yrd Method - 1
 
         // !!! Bir yil icinde bir tane Guz donemi veya Yaz Donemi olmali kontrolu
@@ -91,9 +87,7 @@ public class EducationTermService {
     }
 
     public EducationTermResponse getEducationTermById(Long id) {
-
         EducationTerm term = isEducationTermExist(id);
-
         return educationTermMapper.mapEducationTermToEducationTermResponse(term);
     }
 
@@ -113,12 +107,11 @@ public class EducationTermService {
     public Page<EducationTermResponse> getAllEducationTermsByPage(int page, int size, String sort, String type) {
 
         Pageable pageable = pageableHelper.getPageableWithProperties(page, size, sort, type);
-        return educationTermRepository.findAll(pageable).
-                map(educationTermMapper::mapEducationTermToEducationTermResponse);
+        return educationTermRepository.findAll(pageable).map(educationTermMapper::mapEducationTermToEducationTermResponse);
     }
 
     // Not: deleteById() *********************************************************************
-    public ResponseMessage deleteEducationTermById(Long id){
+    public ResponseMessage deleteEducationTermById(Long id) {
         isEducationTermExist(id);
         educationTermRepository.deleteById(id);
         //!!! SORU : EducationTerm silinince LessonProgramlar ne olacak, buraya onuda sileecek
@@ -131,7 +124,7 @@ public class EducationTermService {
     }
 
     // Not: updateById() *********************************************************************
-    public ResponseMessage<EducationTermResponse>updateEducationTerm(Long id,EducationTermRequest educationTermRequest){
+    public ResponseMessage<EducationTermResponse> updateEducationTerm(Long id, EducationTermRequest educationTermRequest) {
         // !!! ıd var mı ???
         isEducationTermExist(id);
         // !!! gırılen tarıhler dogru mu ???
@@ -139,7 +132,7 @@ public class EducationTermService {
 
         EducationTerm educationTermUpdated =
                 educationTermRepository.save(
-                        educationTermMapper.mapEducationTermRequestToUpdatedEducationTerm(id,educationTermRequest));
+                        educationTermMapper.mapEducationTermRequestToUpdatedEducationTerm(id, educationTermRequest));
 
         return ResponseMessage.<EducationTermResponse>builder()
                 .message(SuccessMessages.EDUCATION_TERM_UPDATE)
@@ -148,8 +141,7 @@ public class EducationTermService {
                 .build();
     }
 
-    public EducationTerm findEducationTermById(Long educationTermId){
+    public EducationTerm findEducationTermById(Long educationTermId) {
         return isEducationTermExist(educationTermId);
     }
-
 }

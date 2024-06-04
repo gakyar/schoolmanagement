@@ -62,7 +62,6 @@ public class EducationTermController {
     }
 
     //Not: ODEVVV UpdateById *********************************
-
     @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER')")
     @PutMapping("/update/{id}")// http://localhost:8080/educationTerms/update/1 + JSON
     public ResponseMessage<EducationTermResponse>updateEducationTerm(@PathVariable Long id,

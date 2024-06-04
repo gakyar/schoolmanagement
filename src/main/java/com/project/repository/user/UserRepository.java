@@ -23,8 +23,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     boolean existsByEmail(String email);
 
-    @Query("SELECT u FROM User u WHERE u.userRole.roleName = :roleName")
-        // JPQL versiyonu
+    @Query("SELECT u FROM User u WHERE u.userRole.roleName = :roleName") // JPQL versiyonu
     Page<User> findByUserByRole(String roleName, Pageable pageable);
 
     List<User> getUserByNameContaining(String name);
@@ -37,14 +36,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u FROM User u WHERE u.isAdvisor=?1")
     List<User> findAllByAdvisor(Boolean aTrue);
 
-    List<User> findByIsAdvisor(Boolean isAdvisor);
-
     @Query(value = "SELECT ( COUNT (u)>0 ) FROM User u WHERE u.userRole.roleType = ?1")
     boolean findStudent(RoleType roleType);
 
     @Query(value = "SELECT MAX (u.studentNumber) FROM User u")
     int getMaxStudentNumber();
+
+    @Query("SELECT u from User u where u.id IN :studentIds")
+    List<User> findByIdsEquals(Long[] studentIds);
 }
-
-
-
