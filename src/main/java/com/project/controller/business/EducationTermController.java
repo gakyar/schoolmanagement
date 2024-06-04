@@ -1,12 +1,8 @@
 package com.project.controller.business;
 
-import com.project.entity.concretes.business.EducationTerm;
 import com.project.payload.request.business.EducationTermRequest;
-import com.project.payload.request.business.LessonRequest;
 import com.project.payload.response.business.EducationTermResponse;
-import com.project.payload.response.business.LessonResponse;
 import com.project.payload.response.business.ResponseMessage;
-import com.project.payload.response.user.UserResponse;
 import com.project.service.business.EducationTermService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -60,17 +56,18 @@ public class EducationTermController {
 
     // Not:ODEVVV deleteById ********************************
     @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER')")
-    @DeleteMapping("/deleteById/{id}")// http://localhost:8080/educationTerm/deleteById/1
-    public ResponseMessage<EducationTermResponse> deleteById(@PathVariable Long id){
-        return educationTermService.deleteById(id);
+    @DeleteMapping("/delete/{id}") // http://localhost:8080/educationTerms/delete/1
+    public ResponseMessage<?>deleteEducationTermById(@PathVariable Long id){
+        return educationTermService.deleteEducationTermById(id);
     }
 
     //Not: ODEVVV UpdateById *********************************
-    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER')")
-    @PutMapping("/update/{educationId}") //http://localhost:8080/educationTerm/update/1
-    public ResponseEntity<EducationTermResponse> updateById(@PathVariable Long educationTermId,
-                                                            @RequestBody EducationTermRequest educationTermRequest){
-        return ResponseEntity.ok(educationTermService.updateById(educationTermId, educationTermRequest));
+
+    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER')")
+    @PutMapping("/update/{id}")// http://localhost:8080/educationTerms/update/1 + JSON
+    public ResponseMessage<EducationTermResponse>updateEducationTerm(@PathVariable Long id,
+                                                                     @RequestBody @Valid EducationTermRequest educationTermRequest ){
+        return educationTermService.updateEducationTerm(id,educationTermRequest);
     }
 
 }
