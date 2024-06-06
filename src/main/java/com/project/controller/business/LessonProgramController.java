@@ -5,7 +5,10 @@ import com.project.payload.response.business.LessonProgramResponse;
 import com.project.payload.response.business.ResponseMessage;
 import com.project.service.business.LessonProgramService;
 import lombok.RequiredArgsConstructor;
+<<<<<<< HEAD
 import org.springframework.data.domain.Page;
+=======
+>>>>>>> origin/master
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,11 +38,14 @@ public class LessonProgramController {
     }
 
     // Not : ( ODEV ) getById() *************************************************************
+<<<<<<< HEAD
     @GetMapping("/getById/{id}") //http://localhost:8080/lessonPrograms/getById/1
     @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER')")
     public LessonProgramResponse getLessonProgramById(@PathVariable Long id){
         return lessonProgramService.getLessonProgramById(id);
     }
+=======
+>>>>>>> origin/master
 
 
     //herhangi bir kullanici atamasi yapilmamis butun dersprogramlari getirecegiz
@@ -50,6 +56,7 @@ public class LessonProgramController {
     }
 
     // Not : (ODEV ) getAllLessonProgramAssigned() *************************************
+<<<<<<< HEAD
     @GetMapping("/getAllAssigned") //http://localhost:8080/lessonPrograms/getAllAssigned
     @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER','TEACHER','STUDENT')")
     public List<LessonProgramResponse>getAllAssigned(){
@@ -73,6 +80,12 @@ public class LessonProgramController {
             @RequestParam(value = "type") String type){
         return lessonProgramService.getAllLessonProgramByPage(page,size,sort,type);
     }
+=======
+
+    // Not : ( ODEV ) Delete() ********************************************************
+
+    // Not : ( ODEV ) getAllWithPage() *************************************************
+>>>>>>> origin/master
 
 
     // bir Ogretmen kendine ait lessonProgramlari getiriyor
@@ -90,4 +103,9 @@ public class LessonProgramController {
 
         return lessonProgramService.getAllLessonProgramByUser(httpServletRequest);
     }
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> origin/master
 }
